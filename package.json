@@ -1,0 +1,10 @@
+{
+  "name": "DeviceLogViewer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "colors-cli": "^1.0.21",
+    "serialport": "^7.1.4"
+  }
+}
