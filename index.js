@@ -2,7 +2,7 @@ const SerialPort = require('serialport')
 const color = require('colors-cli')
 require('colors-cli/toxic')
 
-const portPath = '/dev/cu.SLAB_USBtoUART47'
+const portPath = '/dev/cu.SLAB_USBtoUART49'
 const baudRate = 115200
 let logLineCache = ''
 
@@ -26,12 +26,15 @@ const printLog = log => {
     const displayCurrentTime = true
 
     switch(true) {
-        case /Property\sSet\sReceived/ig.test(log):
+        case /Property\sSet\sReceived/ig.test(log): // 固件收到 APP 下发的指令
             log = log.green
             break
-        case /Message Post Reply Received/ig.test(log):
+        case /Message Post Reply Received/ig.test(log): // 固件上报数据给云端完成
             log = log.blue
             break    
+        case /Property post all/ig.test(log): // 全部数据上报（每分钟 1 次）
+            log = log.blue
+            break
         default:
             console.log(log)
             break
@@ -44,12 +47,15 @@ const printLog = log => {
     if (displayTypeTag) {
         let tag = 'No Tag'
         switch(true) {
-            case /Property\sSet\sReceived/ig.test(log):
+            case /Property\sSet\sReceived/ig.test(log): // 固件收到 APP 下发的指令
                 tag = 'From APP'
                 break
-            case /Message Post Reply Received/ig.test(log):
+            case /Message Post Reply Received/ig.test(log): // 固件上报数据给云端完成
                 tag = 'To Cloud'
                 break    
+            case /Property post all/ig.test(log): // 全部数据上报（每分钟 1 次）
+                tag = 'Post all'
+                break
             default:
                 break
         }
