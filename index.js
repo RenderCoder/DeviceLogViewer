@@ -1,8 +1,9 @@
 const SerialPort = require('serialport')
 const color = require('colors-cli')
 require('colors-cli/toxic')
+const time = require('./tool/time')
 
-const portPath = '/dev/cu.SLAB_USBtoUART49'
+const portPath = '/dev/cu.SLAB_USBtoUART57'
 const baudRate = 115200
 let logLineCache = ''
 
@@ -21,9 +22,14 @@ const onData = data => {
 }
 
 const printLog = log => {
+    // 显示配置
     const ignoreOriginalDeviceLogTag = true
     const displayTypeTag = true
     const displayCurrentTime = true
+    const displayUnknowTagLog = false // 显示未知、未预先定义的日志
+
+    // 计算缓存变量
+    let unknowTag = false
 
     switch(true) {
         case /Property\sSet\sReceived/ig.test(log): // 固件收到 APP 下发的指令
@@ -36,12 +42,12 @@ const printLog = log => {
             log = log.blue
             break
         default:
-            console.log(log)
             break
     }
 
     if (ignoreOriginalDeviceLogTag) {
-        log = log.replace(/\[\w+\]\[[\w\:\s]+\]/ig, '')
+        // log = log.replace(/\[\w+\]\[[\w\:\s]+\]/ig, '')
+        log = log.replace(/\[\w+\]/ig, '') // 保留固件代码行数打印
     }
 
     if (displayTypeTag) {
@@ -57,16 +63,31 @@ const printLog = log => {
                 tag = 'Post all'
                 break
             default:
+                unknowTag = true
                 break
         }
-        tag = tag.padEnd(8, '-')
-        tag = `[${tag}]`
+        const tagMaxLength = 12 // 预定义 tag 字符串最大长度
+        const padString = '-' // 前后填充字符
+        const padStartLength = Math.floor((tagMaxLength - tag.length)/2)
+        const padEndLength = tagMaxLength - tag.length - padStartLength
+
+        tag = tag.padStart(padStartLength, padString)
+        tag = tag.padEnd(padEndLength, padString)
+        tag = `[ ${tag} ]`
         log = `${tag.yellow} ${log}`
     }
 
     if (displayCurrentTime) {
-        log = `${(new Date()).toString().cyan}  ${log}`
+        log = `${time.stringForNow.cyan}  ${log}`
     }
+
+    // 不显示未知、未预定义的日志
+    if (!displayUnknowTagLog && unknowTag) {
+        return
+    }
+
+    // 去除行尾换行
+    log = log.replace(/\n+/ig, '')
 
     console.log(log)
 }
