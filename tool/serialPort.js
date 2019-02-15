@@ -1,15 +1,10 @@
+const fs = require('fs')
 const SerialPort = require('serialport')
 const color = require('colors-cli')
 require('colors-cli/toxic')
-const time = require('./tool/time')
+const time = require('./time')
 
-const portPath = '/dev/cu.SLAB_USBtoUART64'
-const baudRate = 115200
 let logLineCache = ''
-
-const port = new SerialPort(portPath, {
-  baudRate,
-})
 
 const onData = data => {
     let dataString = data.toString('binary')
@@ -26,7 +21,7 @@ const printLog = log => {
     const ignoreOriginalDeviceLogTag = true
     const displayTypeTag = true
     const displayCurrentTime = true
-    const displayUnknowTagLog = false // 显示未知、未预先定义的日志
+    const displayUnknowTagLog = true // 显示未知、未预先定义的日志
 
     // 计算缓存变量
     let unknowTag = false
@@ -87,18 +82,45 @@ const printLog = log => {
     }
 
     // 去除行尾换行
-    log = log.replace(/\n+/ig, '')
+    log = log
+        .replace(/^\n+/ig, '')
+        .replace(/\n+$/ig, '')
 
     console.log(log)
 }
 
-port.on('open', function() {
-    console.log(`Has been open port ${portPath} by baudRate ${baudRate}`)
-})
+const serialPort = {
+    port: null,
+    get list() {
+        const fileList = fs.readdirSync('/dev', {encoding: 'utf8'})
+            .filter(fileName => /^cu\./ig.test(fileName))
+            .filter(fileName => !/^cu\.Bluetooth/ig.test(fileName))
+            .filter(fileName => !/SPPDev/ig.test(fileName))
+        return fileList
+    },
+    baudRateList: [
+        {
+            value: 115200,
+            name: '115200 - MXCHIP 3080 / MOC 1290',
+        },
+        {
+            value: 921600,
+            name: '921600 - MXCHIP 3060 / MOC 108',
+        },
+    ],
+    connect: (portPath, baudRate) => {
+        this.port = new SerialPort(portPath, {
+            baudRate,
+        })
+        this.port.on('open', function() {
+            console.log(`Has been open port ${portPath} by baudRate ${baudRate}`)
+        })
+        this.port.on('readable', () => {
+            this.port.read()
+        })
+        // Switches the port into "flowing mode"
+        this.port.on('data', onData)
+    },
+}
 
-port.on('readable', () => {
-    port.read()
-})
-  
-// Switches the port into "flowing mode"
-port.on('data', onData)
+module.exports = serialPort
