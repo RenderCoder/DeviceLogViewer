@@ -1,5 +1,6 @@
 const inquirer = require('inquirer')
 const serialPort = require('./serialPort')
+const websocketServer = require('./websocketServer')
 
 const cache = {
     device: null,
@@ -33,6 +34,7 @@ const interaction = {
             // console.log(`selected baud rate: ${res.baudRate}\n`)
             cache.baudRate = res.baudRate
             serialPort.connect(cache.device, cache.baudRate)
+            websocketServer.setup()
         },
     }
 }

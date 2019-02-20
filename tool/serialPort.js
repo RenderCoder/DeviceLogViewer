@@ -3,6 +3,7 @@ const SerialPort = require('serialport')
 const color = require('colors-cli')
 require('colors-cli/toxic')
 const time = require('./time')
+const logContent = require('./log')
 
 let logLineCache = ''
 
@@ -25,6 +26,7 @@ const printLog = log => {
 
     // 计算缓存变量
     let unknowTag = false
+    let tag = null
 
     switch(true) {
         case /Property\sSet\sReceived/ig.test(log): // 固件收到 APP 下发的指令
@@ -46,47 +48,49 @@ const printLog = log => {
     }
 
     if (displayTypeTag) {
-        let tag = 'No Tag'
+        // let tag = 'No Tag'
         switch(true) {
             case /Property\sSet\sReceived/ig.test(log): // 固件收到 APP 下发的指令
                 tag = 'From APP'
                 break
             case /Message Post Reply Received/ig.test(log): // 固件上报数据给云端完成
                 tag = 'To Cloud'
-                break    
+                break
             case /Property post all/ig.test(log): // 全部数据上报（每分钟 1 次）
                 tag = 'Post all'
                 break
             default:
                 unknowTag = true
+                tag = 'Unknow'
                 break
         }
-        const tagMaxLength = 12 // 预定义 tag 字符串最大长度
-        const padString = '-' // 前后填充字符
-        const padStartLength = Math.floor((tagMaxLength - tag.length)/2)
-        const padEndLength = tagMaxLength - tag.length - padStartLength
+        // const tagMaxLength = 12 // 预定义 tag 字符串最大长度
+        // const padString = '-' // 前后填充字符
+        // const padStartLength = Math.floor((tagMaxLength - tag.length)/2)
+        // const padEndLength = tagMaxLength - tag.length - padStartLength
 
-        tag = tag.padStart(padStartLength, padString)
-        tag = tag.padEnd(padEndLength, padString)
-        tag = `[ ${tag} ]`
-        log = `${tag.yellow} ${log}`
+        // tag = tag.padStart(padStartLength, padString)
+        // tag = tag.padEnd(padEndLength, padString)
+        // tag = `[ ${tag} ]`
+        // log = `${tag.yellow} ${log}`
     }
 
-    if (displayCurrentTime) {
-        log = `${time.stringForNow.cyan}  ${log}`
-    }
+    // if (displayCurrentTime) {
+    //     log = `${time.stringForNow.cyan}  ${log}`
+    // }
 
     // 不显示未知、未预定义的日志
-    if (!displayUnknowTagLog && unknowTag) {
-        return
-    }
+    // if (!displayUnknowTagLog && unknowTag) {
+    //     return
+    // }
 
     // 去除行尾换行
     log = log
         .replace(/^\n+/ig, '')
         .replace(/\n+$/ig, '')
 
-    console.log(log)
+    logContent(log, ['Firmware', tag])
+    // console.log(log)
 }
 
 const serialPort = {
