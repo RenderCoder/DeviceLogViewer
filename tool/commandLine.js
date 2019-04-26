@@ -1,6 +1,12 @@
+const fs = require('fs')
+const path = require('path')
 const inquirer = require('inquirer')
+const color = require('colors-cli')
+require('colors-cli/toxic')
+
 const serialPort = require('./serialPort')
 const websocketServer = require('./websocketServer')
+const tagIt = require('./tag')
 
 const cache = {
     device: null,
@@ -57,29 +63,51 @@ const doInteraction = interactionItem => {
 // 开始业务逻辑
 const commandLine = {}
 
+// 开始显示选择项
 commandLine.start = () => {
     doInteraction(interaction.selectDevice)
 }
 
-// run test
-commandLine.start()
+commandLine.setup = () => {
+    const args = process.argv
+    const haveParams =  args.length > 1
+    // console.log('args', args)
+    const firstParam = haveParams ? args[2] : null
+    
+    if (firstParam === 'version' || firstParam === 'v') {
+        const packageJSONFileContent = fs.readFileSync(
+            path.resolve(__dirname, '../package.json'),
+            {
+                encoding: 'utf8',
+            }
+        )
+        try {
+            const packageJSON = JSON.parse(packageJSONFileContent)
+            const currentVersion = packageJSON.version
+            console.log('')
+            console.log(`[${tag}] `.green.bold, packageJSON.name)
+            console.log(`[${tagIt()}]`.green.bold, currentVersion)
+            console.log('')
+        } catch (error) {
+            console.log('[Error] '.red.bold, error)
+        }
+        process.exit()
+        return
+    }
 
-// inquirer
-//   .prompt([
-//     {
-//         type: 'input',
-//         name: 'name',
-//         message: 'your name:',
-//         default: 'nobody',
-//         // validate: value => false,
-//     },
-//     {
-//         type: 'list',
-//         name: 'name',
-//         message: 'Select baud rate',
-//         choices: serialPort.baudRateList,
-//     }
-//   ])
-//   .then(res => {
-//     console.log(`Hi, ${res.name}`)
-//   });
+    // 判断是否保存日志到文件
+    global.saveLogToFile = false
+    if (firstParam) {
+        const saveLogFileBasicPath = path.resolve(process.cwd(), firstParam)
+        if (fs.existsSync(saveLogFileBasicPath)) {
+            global.saveLogToFile = true
+            global.saveLogFileBasicPath = saveLogFileBasicPath
+        }
+    }
+    
+    commandLine.start()
+}
+
+
+
+commandLine.setup()

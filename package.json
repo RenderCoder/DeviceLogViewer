@@ -1,8 +1,12 @@
 {
-  "name": "DeviceLogViewer",
-  "version": "1.0.0",
+  "name": "mxlog",
+  "version": "1.0.2",
+  "description": "A user friendly IoT log viewer.",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "mxlog": "cli"
+  },
   "dependencies": {
     "colors-cli": "^1.0.21",
     "inquirer": "^6.2.2",

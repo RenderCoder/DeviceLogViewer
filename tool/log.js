@@ -5,8 +5,6 @@ require('colors-cli/toxic')
 const time = require('./time')
 const tagIt = require('./tag')
 
-const logFilePath = path.join(__dirname, '../log/allLog.log')
-
 const log = (content, tag) => {
     // 显示配置
     const ignoreOriginalDeviceLogTag = true
@@ -26,7 +24,12 @@ const log = (content, tag) => {
     console.log(logContent)
 
     // save to file
-    const logContentForSave = `${time.stringForNow} ${tag}  ${content}`
+    if (!saveLogToFile || !global.saveLogFileBasicPath) {
+        return
+    }
+    const logFilePath = path.resolve(global.saveLogFileBasicPath, `./mxlog_${time.stringForToday}.log`)
+    const cleanTerminalColor = data => data.replace(/\[\d+m$/ig, '')
+    const logContentForSave = `${time.stringForNow} ${cleanTerminalColor(tag)}  ${cleanTerminalColor(content)}`
     fs.appendFileSync(
         logFilePath, 
         `${logContentForSave}\n`, 

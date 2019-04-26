@@ -1,7 +1,6 @@
-const tagMaxLength = 12 // 预定义 tag 字符串最大长度
-const padString = ' ' // 前后填充字符
-
-const tagIt = tag => {
+const tagIt = (tag, tagLength) => {
+    const tagMaxLength = tagLength || 12 // 预定义 tag 字符串最大长度
+    const padString = ' ' // 前后填充字符
     const padStartLength = Math.floor((tagMaxLength - tag.length)/2)
     const padEndLength = tagMaxLength - tag.length - padStartLength
 
@@ -21,6 +20,6 @@ const test = () => {
     console.log(tagIt('ok'))
     console.log(tagIt('bijiabo'))
 }
-test()
+// test()
 
 module.exports = tagIt

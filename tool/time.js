@@ -11,6 +11,12 @@ const time = {
             .format("YYYY/MM/DD HH:mm:ss")
         return currentTime
     },
+    get stringForToday() {
+        const currentTime = moment()
+            .tz("Asia/Shanghai")
+            .format("YYYY-MM-DD")
+        return currentTime
+    },
 }
 
 // console.log(time.stringForNow)

@@ -33,15 +33,18 @@ const printLog = log => {
 
     switch(true) {
         case /Property\sSet\sReceived/ig.test(log): // 固件收到 APP 下发的指令
+        case /fromCloud/ig.test(log): // 固件收到 APP 下发的指令
             log = log.green
             break
         case /Message Post Reply Received/ig.test(log): // 固件上报数据给云端完成
+        case /sendToCloud/ig.test(log): // 固件收到 APP 下发的指令
             log = log.blue
             break    
         case /Property post all/ig.test(log): // 全部数据上报（每分钟 1 次）
             log = log.blue
             break
         default:
+            log = log.white
             break
     }
 
@@ -54,9 +57,11 @@ const printLog = log => {
         let tag = 'No Tag'
         switch(true) {
             case /Property\sSet\sReceived/ig.test(log): // 固件收到 APP 下发的指令
+            case /fromCloud/ig.test(log): // 固件收到 APP 下发的指令
                 tag = 'From APP'
                 break
             case /Message Post Reply Received/ig.test(log): // 固件上报数据给云端完成
+            case /sendToCloud/ig.test(log): // 固件收到 APP 下发的指令
                 tag = 'To Cloud'
                 break    
             case /Property post all/ig.test(log): // 全部数据上报（每分钟 1 次）
