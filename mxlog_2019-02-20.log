@@ -1,0 +1,42 @@
+2019/02/20 20:11:49  @[32m[solo: 170] Property Set Received, Devid: 0, Request: {"LightSwitch":0}
+
+2019/02/20 20:11:49  @[solo: 184] LightSwitch:0
+2019/02/20 20:11:49  @[solo: 276] Post Property Message ID: 596
+2019/02/20 20:11:49  @[device: 503] model:5
+2019/02/20 20:11:50  @[34m[solo: 372] Message Post Reply Received, Devid: 0, Message ID: 596, Code: 200, Reply: {}
+
+2019/02/20 20:11:50  @[32m[solo: 170] Property Set Received, Devid: 0, Request: {"LightSwitch":1}
+
+2019/02/20 20:11:50  @[solo: 184] LightSwitch:1
+2019/02/20 20:11:50  @[solo: 276] Post Property Message ID: 597
+2019/02/20 20:11:50  @[device: 503] model:5
+2019/02/20 20:11:51  @[34m[solo: 372] Message Post Reply Received, Devid: 0, Message ID: 597, Code: 200, Reply: {}
+
+2019/02/20 20:12:15  @[32m[solo: 170] Property Set Received, Devid: 0, Request: {"LightSwitch":0}
+
+2019/02/20 20:12:15  @[solo: 184] LightSwitch:0
+2019/02/20 20:12:15  @[solo: 276] Post Property Message ID: 598
+2019/02/20 20:12:15  @[device: 503] model:5
+2019/02/20 20:12:15  @[34m[solo: 372] Message Post Reply Received, Devid: 0, Message ID: 598, Code: 200, Reply: {}
+
+2019/02/20 20:12:16  @[32m[solo: 170] Property Set Received, Devid: 0, Request: {"LightSwitch":1}
+
+2019/02/20 20:12:16  @[solo: 184] LightSwitch:1
+2019/02/20 20:12:16  @[solo: 276] Post Property Message ID: 599
+2019/02/20 20:12:16  @[device: 503] model:5
+2019/02/20 20:12:16  @[34m[solo: 372] Message Post Reply Received, Devid: 0, Message ID: 599, Code: 200, Reply: {}
+
+2019/02/20 20:12:19  @[32m[solo: 170] Property Set Received, Devid: 0, Request: {"LightSwitch":0}
+
+2019/02/20 20:12:19  @[solo: 184] LightSwitch:0
+2019/02/20 20:12:19  @[solo: 276] Post Property Message ID: 600
+2019/02/20 20:12:19  @[device: 503] model:5
+2019/02/20 20:12:19  @[34m[solo: 372] Message Post Reply Received, Devid: 0, Message ID: 600, Code: 200, Reply: {}
+
+2019/02/20 20:12:20  @[32m[solo: 170] Property Set Received, Devid: 0, Request: {"LightSwitch":1}
+
+2019/02/20 20:12:20  @[solo: 184] LightSwitch:1
+2019/02/20 20:12:20  @[solo: 276] Post Property Message ID: 601
+[device: 503] model:5
+2019/02/20 20:12:20  @[34m[solo: 372] Message Post Reply Received, Devid: 0, Message ID: 601, Code: 200, Reply: {}
+

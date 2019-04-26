@@ -35,10 +35,10 @@ const printLog = log => {
             break
         case /Message Post Reply Received/ig.test(log): // 固件上报数据给云端完成
         case /\@sendToCloud/ig.test(log): // 固件上报数据给云端完成
-            log = log.blue_bt
+            log = log.yellow
             break    
         case /Property post all/ig.test(log): // 全部数据上报（每分钟 1 次）
-            log = log.blue_bt
+            log = log.yellow
             break
         default:
             log = log.black_bt
