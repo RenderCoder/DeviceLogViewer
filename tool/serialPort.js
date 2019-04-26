@@ -91,8 +91,8 @@ const printLog = log => {
 
     // 去除行尾换行
     log = log
-        .replace(/^\n+/ig, '')
-        .replace(/\n+$/ig, '')
+        .replace(/^[\n\r\s]+/ig, '')
+        .replace(/[\n\r\s]+$/ig, '')
 
     logContent(log, ['Firmware', tag])
     // console.log(log)

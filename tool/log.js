@@ -21,7 +21,7 @@ const log = (content, tag) => {
     }
 
     const logContent = `${time.stringForNow.cyan} ${tag.yellow}  ${content}`
-    console.log(logContent)
+    process.stdout.write(logContent)
 
     // save to file
     if (!saveLogToFile || !global.saveLogFileBasicPath) {
