@@ -8,8 +8,10 @@
     "mxlog": "cli"
   },
   "dependencies": {
+    "chalk": "^2.4.2",
     "colors-cli": "^1.0.21",
     "inquirer": "^6.2.2",
+    "kelvin-to-rgb": "^1.0.2",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.23",
     "serialport": "^7.1.4",
